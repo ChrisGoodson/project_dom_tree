@@ -21,11 +21,9 @@ class DomTree
   end
 
   def parse_string(str)
-    b = str.split(/<\w*\d*/).map {|item| item.strip}
-
-
+    str.scan(/<.*>|.*/).map(&:strip).reject(&:empty?)
     # b = str.split("\n").map { |item| item.strip }
-    #.reject { |item| item.match(/<\/(\w*\d*)>/)}  
+    #.reject { |item| item.match(/<\/(\w*\d*)>/)}
     # b.map do |item|
     #   if match = item.match(/<(\w*\d*)>/)
     #     match.captures[0]
@@ -33,6 +31,10 @@ class DomTree
     #     text.captures[0]
     #   end
     # end.compact
+  end
+
+  def build_tree
+    
   end
 
 
