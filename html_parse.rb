@@ -7,19 +7,15 @@
 #outputter method that prints the tree.
 
 
-Node = Struct.new(:type, :children :parent)
+Node = Struct.new(:type, :children, :parent, :depth)
 
 class DomTree
-  attr_reader :string
+  attr_reader :string, :document
 
   def initialize(str)
     @string = str
-    @document = build_node("document head")
+    @document = Node.new("document head", [], nil, 0)
     @parsed_string = []
-  end
-
-  def build_node(type)
-    Node.new(type)
   end
 
   def parse_string(str)
@@ -27,27 +23,26 @@ class DomTree
   end
 
   def build_tree
-    #loop through each item in parse string;
-    #for each item we want to build a node and set parent's node pointers;
-    #for each item in the array, loop through each item in array
-    #and check if its an html item[0] == < && item[1] != /
     top = @document
     @parsed_string.each do |item|
       if item[0] == "<" && item[1] != "/"
-        top.children << top = Node.new(item, [], top)
+        top.children << top = Node.new(item, [], top, top.depth + 1)
       elsif item[0] == "<" && item[1] == "/"
+        top.children << Node.new(item, nil, top, top.depth + 1)
         top = top.parent
       else
-        top.children << Node.new(item, nil, top)
+        top.children << Node.new(item, nil, top, top.depth + 1)
+      end
     end
-
-
-    
-
   end
 
-
-
+  def render
+    stack = [@document]
+    while item = stack.pop
+      item.children.each { |type| stack << type } if item.children
+      p item.type
+    end
+  end
 
 end
 
@@ -64,7 +59,9 @@ dom = DomTree.new("<div>
   div text after
 </div>")
 
-p dom.parse_string(dom.string)
+dom.parse_string(dom.string)
+dom.build_tree
+dom.render
 
 # "<div>
 #   div text before
