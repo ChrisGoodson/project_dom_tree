@@ -7,7 +7,9 @@ class DomTree
   end
 
   def type
-    @tag.match(/<([a-z]*\d*)\W/).captures[0] if tag.match(/<([a-z]*\d*)\W/)
+    if match = tag.match(/<([a-z]*\d*)\W/)
+      match.captures[0]
+    end
   end
 
   def classes
