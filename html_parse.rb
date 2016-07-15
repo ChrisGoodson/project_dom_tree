@@ -2,22 +2,18 @@
 #nodes like type
 #no attributes in example
 #we're going to need a tree
-#we'll feed it a string and it will break ever differnt type 
+#we'll feed it a string and it will break ever differnt type
 # to it's own node and add to the tree.
 #outputter method that prints the tree.
 
 
 Node = Struct.new(:type, :children)
 
-
 class DomTree
-
-
-
   attr_reader :string
 
   def initialize(str)
-  @string = str
+    @string = str
   end
 
   def build_node(type)
@@ -25,17 +21,32 @@ class DomTree
   end
 
   def parse_string(str)
-    b = str.split("\n").map {|item| item.strip}
-    b
-  
+    b = str.split("\n").map { |item| item.strip }
+    b.map do |item|
+      if match = item.match(/<(\w*\d*)>/)
+        match.captures[0]
+      elsif text = item.match(/\A(.*)\z/)
+        text.captures[0]
+      end
+    end.compact
   end
 
 end
 
+dom = DomTree.new("<div>
+  div text before
+  <p>
+    p text
+  </p>
+  <div>
+    more div text
+  </div>
+  div text after
+</div>")
 
+p dom.parse_string(dom.string)
 
-
-# <div>
+# "<div>
 #   div text before
 #   <p>
 #     p text
@@ -44,7 +55,7 @@ end
 #     more div text
 #   </div>
 #   div text after
-# </div>
+# </div>"
 
 
 
