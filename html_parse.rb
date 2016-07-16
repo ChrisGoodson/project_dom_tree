@@ -7,7 +7,7 @@
 #outputter method that prints the tree.
 
 
-Node = Struct.new(:type, :children, :parent, :depth)
+Node = Struct.new(:type, :children, :parent, :depth )
 
 class DomTree
   attr_reader :string, :document
@@ -38,8 +38,8 @@ class DomTree
 
   def render
     stack = [@document]
-    while item = stack.pop
-      item.children.each { |type| stack << type } if item.children
+    while item = stack.shift
+      item.children.reverse_each { |type| stack.unshift(type) } if item.children
       p item.type
     end
   end
