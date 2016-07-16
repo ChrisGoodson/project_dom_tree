@@ -28,7 +28,7 @@ class DomTree
       if item[0] == "<" && item[1] != "/"
         top.children << top = Node.new(item, [], top, top.depth + 1)
       elsif item[0] == "<" && item[1] == "/"
-        top.children << Node.new(item, nil, top, top.depth + 1)
+        top.children << Node.new(item, nil, top, top.depth)
         top = top.parent
       else
         top.children << Node.new(item, nil, top, top.depth + 1)
@@ -37,10 +37,10 @@ class DomTree
   end
 
   def render
-    stack = [@document]
-    while item = stack.shift
-      item.children.reverse_each { |type| stack.unshift(type) } if item.children
-      p item.type
+    queue = [@document]
+    while item = queue.shift
+      item.children.reverse_each { |type| queue.unshift(type) } if item.children
+      p "#{"  " * item.depth}#{item.type}"
     end
   end
 
@@ -48,7 +48,7 @@ end
 
 
 
-dom = DomTree.new("<div>
+dom = DomTree.new('<div>
   div text before
   <p>
     p text
@@ -57,7 +57,7 @@ dom = DomTree.new("<div>
     more div text
   </div>
   div text after
-</div>")
+</div>')
 
 dom.parse_string(dom.string)
 dom.build_tree
