@@ -12,8 +12,7 @@ class TreeSearcher
     stack = [@tree]
     matching_nodes = []
     while node = stack.pop
-      matching_nodes = match_attributes(node, attribute, text,
-                                                matching_nodes)
+      matching_nodes += match_attributes(node, attribute, text)
       stack += add_children_to_stack(node)
     end
     matching_nodes
@@ -27,7 +26,8 @@ class TreeSearcher
     stack
   end
 
-  def match_attributes(node, attribute, text, arr)
+  def match_attributes(node, attribute, text)
+    arr = []
     if att = get_attribute(node.type, attribute.to_s)
       att.each { |item| arr << node if item == text }
     elsif text == node.type
@@ -51,6 +51,6 @@ contents = file.read
 file.close
 dom.build_tree(contents)
 searcher = TreeSearcher.new(dom.document)
-searcher.search_by(:class, "funky")[0]
-NodeRenderer.new(dom.document).render(nil)
+node =  searcher.search_by(:class, "bold")[1]
+NodeRenderer.new(dom.document).render(node)
 dom.print_to_file
