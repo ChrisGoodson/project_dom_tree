@@ -12,40 +12,49 @@ class NodeRenderer
   end
 
   def nodes_below(node)
-    queue = [node]
+    stack = [node]
     count = 0
-    while item = queue.pop
-      if children = item.children
-        children.each do |child|
-          queue << child
-          count += 1
-        end
-      end
+    while item = stack.pop
+      count += item.children.length if item.children
+      stack += add_children_to_stack(item)
     end
     p "There are #{count} children in this nodes subtree"
   end
 
   def node_type_count(node)
-    queue = [node]
+    stack = [node]
     type_hash = Hash.new(0)
-    while item = queue.pop
+    while item = stack.pop
       match = get_type(item.type)
-      if match != "" && item != node
-        if match == nil
-          type_hash["text"] += 1
-        else
-          type_hash[match] += 1
-        end
-      end
-      if children = item.children
-        children.each do |child|
-          queue << child
-        end
-      end
+      type_hash = update_hash(match, type_hash, item, node)
+      stack += add_children_to_stack(item)
     end
-    type_hash.each do |key, val|
+    print_hash(type_hash)
+  end
+
+  def add_children_to_stack(item)
+    stack = []
+    if children = item.children
+      children.each { |child| stack << child }
+    end
+    stack
+  end
+
+  def print_hash(hash)
+    hash.each do |key, val|
       puts "There are #{val} #{key}(s) in this nodes subtree"
     end
+  end
+
+  def update_hash(match, hash, item, node)
+    if blank_or_star_node?(match, item, node)
+      match == nil ? hash["text"] += 1 : hash[match] += 1
+    end
+    hash
+  end
+
+  def blank_or_star_node?(match, item, node)
+    match != "" && item != node
   end
 
   def get_type(tag)
@@ -55,22 +64,15 @@ class NodeRenderer
   end
 
   def node_attributes(node)
-    if attributes = get_attibutes(node.type)
+    if attributes = get_node_attr(node.type)
       p attributes
     end
   end
 
-  def get_attibutes(tag)
+  def get_node_attr(tag)
     if match = tag.match(/<[a-z]*\d*(.*)>/)
       match.captures[0]
     end
   end
 
 end
-
-# dom = DomTree.new
-# file = File.open("test.html", "rb")
-# contents = file.read
-# file.close
-# dom.build_tree(contents)
-# render = NodeRenderer(dom.document)
