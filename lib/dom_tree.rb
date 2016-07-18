@@ -52,7 +52,9 @@ class DomTree
   end
 
   def build_node(type)
-    Node.new(type)
+    node = Node.new(type)
+    node.build_attributes_hash if opening_tag?(node.type)
+    node
   end
 
   def print_to_file

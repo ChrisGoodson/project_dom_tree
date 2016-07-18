@@ -65,15 +65,7 @@ class NodeRenderer
   end
 
   def node_attributes(node)
-    if attributes = get_node_attr(node.type)
-      p attributes
-    end
-  end
-
-  def get_node_attr(tag)
-    if match = tag.match(/<[a-z]*\d*(.*)>/)
-      match.captures[0]
-    end
+    p node.attributes
   end
 
 end
