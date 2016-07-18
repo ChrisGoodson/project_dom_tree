@@ -6,9 +6,18 @@ describe DomTree do
  
  let(:dom_tree) { DomTree.new }
  let(:dom_tree_error) { DomTree.new("arguments")}
-
-
-  
+ let (:test_html) { "<div>
+                          div text before
+                            <p>
+                              p text
+                            </p>
+                            <div>
+                              more div text
+                            </div>
+                          div text after
+                        </div>" 
+                      }
+ 
   describe '#initialize' do
     it 'returns an instance of DomTree' do
       expect(dom_tree).to be_an_instance_of(DomTree)
@@ -25,17 +34,7 @@ describe DomTree do
 
 
   describe '#parse_string' do
-    let (:test_html) { "<div>
-                          div text before
-                            <p>
-                              p text
-                            </p>
-                            <div>
-                              more div text
-                            </div>
-                          div text after
-                        </div>" 
-                      }
+   
 
     it 'takes a string as an argument' do
       expect { dom_tree.parse_string("test") }.to_not raise_error
@@ -47,18 +46,15 @@ describe DomTree do
 
     end
 
-  # describe '#build_tree' do
+  describe '#build_tree' do
+    it 'takes a string as an argument' do
+      expect { dom_tree.build_tree("test") }.to_not raise_error
+    end
 
- 
-  # end
-
-
-
-
-  # end
-
- 
-
-
+    it 'after building a tree the head node has correct number of children' do
+      dom_tree.build_tree(test_html)
+      expect(dom_tree.document.children.length).to eq(1)
+    end 
+  end
 
 end
