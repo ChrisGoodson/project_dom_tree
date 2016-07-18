@@ -1,6 +1,4 @@
 require 'tree_searcher'
-require 'node_render'
-require 'dom_tree'
 
 describe TreeSearcher do
   let(:tree_search) {TreeSearcher.new("tree")}

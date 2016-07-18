@@ -1,3 +1,4 @@
+
 class NodeRenderer
 
   def initialize(tree)

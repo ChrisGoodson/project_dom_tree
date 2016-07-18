@@ -1,3 +1,5 @@
+require 'node'
+
 class DomTree
   attr_reader :string, :document
 

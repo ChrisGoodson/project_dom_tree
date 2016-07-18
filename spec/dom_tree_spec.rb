@@ -1,4 +1,5 @@
 
+require 'node'
 require 'dom_tree'
 
 describe DomTree do

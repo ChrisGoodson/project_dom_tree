@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'node_render'
+
+require 'node_renderer'
 
 describe NodeRenderer do
   let(:node_render) { NodeRenderer.new("tree")}
@@ -14,8 +14,6 @@ describe NodeRenderer do
       expect{node_render}.to_not raise_error
     end
 
-
   end
 
-  
 end
