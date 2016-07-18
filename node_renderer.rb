@@ -4,7 +4,8 @@ class NodeRenderer
     @tree = tree
   end
 
-  def render(node = @tree)
+  def render(node)
+    node = @tree if node == nil
     nodes_below(node)
     node_type_count(node)
     node_attributes(node)
@@ -43,7 +44,7 @@ class NodeRenderer
       end
     end
     type_hash.each do |key, val|
-      puts "There are #{val} #{key}(s) if this nodes subtree"
+      puts "There are #{val} #{key}(s) in this nodes subtree"
     end
   end
 

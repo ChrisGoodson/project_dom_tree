@@ -17,7 +17,7 @@ class DomTree
   end
 
   def parse_string(str)
-    str.scan(/<.*?>|[\w\p{P}\s]*/).map(&:strip).reject(&:empty?)
+    str.scan(/<.*?>|[[a-zA-Z]\p{P}\s]*/).map(&:strip).reject(&:empty?)
   end
 
   def build_tree(str)
@@ -36,11 +36,13 @@ class DomTree
   end
 
   def render
+    file = File.open('output.html', 'w')
     queue = [@document]
     while item = queue.shift
       item.children.reverse_each { |type| queue.unshift(type) } if item.children
-      p "#{"  " * item.depth}#{item.type}"
+      file << "#{"  " * item.depth}#{item.type}\n"
     end
+    file.close
   end
 
 end

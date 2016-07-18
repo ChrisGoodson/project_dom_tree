@@ -88,6 +88,12 @@ file = File.open("test.html", "rb")
 contents = file.read
 file.close
 dom.build_tree(contents)
-searcher = TreeSearcher.new(dom.document)
-node = searcher.search_by(:class, "top-div")[0]
-NodeRenderer.new(dom.document).render(node)
+TreeSearcher.new(dom.document)
+#node = searcher.search_by(:class, "top-div")[0]
+#NodeRenderer.new(dom.document).render(nil)
+dom.render
+
+def is_pangram?(str)
+  str_hash = str.each_with_object({}){ |letter, obj| obj[letter] = true}
+  ('a'..'z').all? { |letter| str_hash.has_key?(letter) }
+end
