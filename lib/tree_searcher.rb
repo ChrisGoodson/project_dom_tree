@@ -51,6 +51,8 @@ contents = file.read
 file.close
 dom.build_tree(contents)
 searcher = TreeSearcher.new(dom.document)
-node =  searcher.search_by(:class, "top-div")[0]
-NodeRenderer.new(dom.document).render(node)
+node = searcher.search_by(:class, "top-div")[0]
+node.build_attributes_hash
+p node.attributes
+#NodeRenderer.new(dom.document).render(node)
 dom.print_to_file
