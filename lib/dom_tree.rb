@@ -6,7 +6,7 @@ class DomTree
   end
 
   def parse_string(str)
-    str.scan(/<.*?>|[[a-zA-Z]\p{P}\s]*/).map(&:strip).reject(&:empty?)
+    str.scan(/<.*?>|[[a-zA-Z]\d\p{P}\s]*/).map(&:strip).reject(&:empty?)
   end
 
   def build_tree(str)
